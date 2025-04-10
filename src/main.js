@@ -45,7 +45,9 @@ function init() {
   document.querySelector('#app').innerHTML = md.render(content);
 }
 
-document.querySelector('#markdown-content').value = `# asdfaf
+document.querySelector('#markdown-content').value = `# markdown-it 配合webcomponent
+
+## mermaid示例
 
 \`\`\`mermaid
   graph TD;
@@ -54,6 +56,8 @@ document.querySelector('#markdown-content').value = `# asdfaf
     C-->D;
     D-->A;
 \`\`\`
+
+## plantuml示例
 
 \`\`\`plantuml
   @startuml
