@@ -84,6 +84,12 @@ document.querySelector('#markdown-content').value = `# markdown-it 配合webcomp
   usecase usecase
   @enduml
 \`\`\`
+
+## 普通代码块示例
+\`\`\`javascript
+  console.log('Hello, world!');
+\`\`\`
+
 `;
 
 init();
