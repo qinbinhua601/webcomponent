@@ -15,7 +15,6 @@ md.renderer.rules.fence = (tokens, idx, options, env, self) => {
   
   // 识别Mermaid代码块[1,6](@ref)
   if (token.info.trim().toLowerCase() === 'mermaid') {
-    // return `<pre class="mermaid2">${token.content}</pre>`;
     return `
       <mermaid-chart 
         code="${token.content}"
@@ -36,25 +35,27 @@ md.renderer.rules.fence = (tokens, idx, options, env, self) => {
   return defaultFenceRenderer(tokens, idx, options, env, self);
 };
 
-// document.querySelector('#app').innerHTML = `
-//   <mermaid-chart 
-//   code="graph TD; A-->B;"
-//   theme="dark"
-// ></mermaid-chart>
-// `
+document.querySelector('#markdown-content').addEventListener('input', (e) => {
+  const content = e.target.value;
+  document.querySelector('#app').innerHTML = md.render(content);
+});
 
-document.querySelector('#app').innerHTML = md.render(`
-  # Hello Markdown-it!
-  ## Mermaid Example
-  \`\`\`mermaid
+function init() {
+  const content = document.querySelector('#markdown-content').value;
+  document.querySelector('#app').innerHTML = md.render(content);
+}
+
+document.querySelector('#markdown-content').value = `# asdfaf
+
+\`\`\`mermaid
   graph TD;
     A-->B;
     B-->C;
     C-->D;
     D-->A;
-  \`\`\`
+\`\`\`
 
-  \`\`\`plantuml
+\`\`\`plantuml
   @startuml
   actor actor
   agent agent
@@ -78,5 +79,7 @@ document.querySelector('#app').innerHTML = md.render(`
   storage storage
   usecase usecase
   @enduml
-  \`\`\`
-`);
+\`\`\`
+`;
+
+init();

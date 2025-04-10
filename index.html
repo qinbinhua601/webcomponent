@@ -5,19 +5,29 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>markdown-it mermaid renderer by webcomponent</title>
+    <style>
+      .wrapper {
+        display: flex;
+        height: 100vh;
+      }
+      .wrapper > textarea {
+        display: block;
+        flex: 1
+      }
+      .wrapper > #app {
+        display: block;
+        flex: 1;
+        overflow: auto;
+      }
+    </style>
   </head>
   <body>
-    <div id="app"></div>
+    <div class="wrapper">
+      <textarea id="markdown-content"></textarea>
+      <div id="app"></div>
+    </div>
     <script type="module" src="/src/mermaid.js"></script>
     <script type="module" src="/src/plantuml.js"></script>
-    <!-- <script type="module">
-      // import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
-      import('https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs')
-        .then(({ default: mermaid}) => {
-          console.log('mermaid loaded', mermaid);
-          mermaid.initialize({ startOnLoad: true });
-        })
-    </script> -->
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>
