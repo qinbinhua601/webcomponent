@@ -1,13 +1,30 @@
 import markdownIt from 'markdown-it';
 
 const md = markdownIt({
+  highlight: function (str, lang) {
+    return `<code-block language="${lang}">${str}</code-block>`;
+    // 如果指定了语言
+    if (lang && hljs.getLanguage(lang)) {
+      try {
+        return '<pre class="hljs"><code>' +
+               hljs.highlight(str, { language: lang, ignoreIllegals: true }).value +
+               '</code></pre>';
+      } catch (__) {}
+    }
+    // 未指定语言时自动检测
+    return '<pre class="hljs"><code>' +
+           hljs.highlightAuto(str).value +
+           '</code></pre>';
+  },
   html: true,          // 允许HTML标签[2](@ref)
   linkify: true,       // 自动转换URL为链接[4](@ref)
   typographer: true    // 支持印刷字符替换[3](@ref)
 });
 
+
+
 // 保存默认的代码块渲染函数[7](@ref)
-const defaultFenceRenderer = md.renderer.rules.fence;
+// const defaultFenceRenderer = md.renderer.rules.fence;
 
 // 2. 自定义fence渲染规则
 md.renderer.rules.fence = (tokens, idx, options, env, self) => {
@@ -30,9 +47,9 @@ md.renderer.rules.fence = (tokens, idx, options, env, self) => {
       </plantuml-chart>
     `
   }
-  
-  // 其他代码块使用默认渲染[8](@ref)
-  return defaultFenceRenderer(tokens, idx, options, env, self);
+  return `
+    <code-block language="${token.info.trim()}">${token.content}</code-block>
+  `;
 };
 
 document.querySelector('#markdown-content').addEventListener('input', (e) => {
@@ -87,7 +104,18 @@ document.querySelector('#markdown-content').value = `# markdown-it 配合webcomp
 
 ## 普通代码块示例
 \`\`\`javascript
-  console.log('Hello, world!');
+console.log('Hello, world!');
+\`\`\`
+
+\`\`\`javascript
+function hello() {
+  console.log('Hello World!');
+}
+\`\`\`
+
+\`\`\`python
+def greet():
+    print("Hello World!")
 \`\`\`
 
 `;

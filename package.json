@@ -12,6 +12,7 @@
     "vite": "^6.2.0"
   },
   "dependencies": {
+    "@sakirtemel/plantuml.js": "^1.0.1",
     "markdown-it": "^14.1.0",
     "mermaid": "^11.6.0",
     "plantuml-encoder": "^1.4.0"
