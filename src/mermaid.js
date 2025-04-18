@@ -27,13 +27,33 @@ class MermaidChart extends HTMLElement {
 
   // 渲染逻辑
   async render() {
-    const code = this.getAttribute('code') || '';
+    const code = decodeURI(this.getAttribute('code')) || '';
     const theme = this.getAttribute('theme') || 'default';
-    
+    const shouldRender = this.getAttribute('shouldRender') === 'true';
+    const key = this.getAttribute('idx') || '';
+    if (!shouldRender) {
+      this.container.innerHTML = `<pre><code>${code}</code></pre>`;
+      return;
+    }
+    console.log('qin', 'render mermaid', code);
     // 初始化 Mermaid
     await mermaid.initialize({ theme });
-    const { svg } = await mermaid.render('mermaid-chart', code);
-    this.container.innerHTML = svg;
+    requestIdleCallback(async () => {
+      if (window.__mermaidCache && window.__mermaidCache[key]) {
+        console.log('qin', 'render mermaid from cache', key);
+        this.container.innerHTML = window.__mermaidCache[key];
+        return;
+      }
+      console.log('qin', 'render mermaid NOT from cache', key);
+      const { svg } = await mermaid.render('mermaid-chart', code);
+      // cache svg by key
+      this.container.innerHTML = svg;
+      if (!window.__mermaidCache) {
+        window.__mermaidCache = {};
+      }
+      window.__mermaidCache[key] = svg;
+      console.log('qin', 'render mermaid done', code);
+    })
   }
 }
 
