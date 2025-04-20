@@ -16,7 +16,7 @@ class MermaidChart extends HTMLElement {
 
   // 监听属性变化
   static get observedAttributes() {
-    return ['code', 'theme'];
+    return ['code', 'theme', 'is-end'];
   }
 
   attributeChangedCallback(name, oldVal, newVal) {
@@ -29,10 +29,12 @@ class MermaidChart extends HTMLElement {
   async render() {
     const code = decodeURI(this.getAttribute('code')) || '';
     const theme = this.getAttribute('theme') || 'default';
-    console.log('qin', 'render mermaid', code);
+    const isEnd = this.getAttribute('is-end') === 'true';
+    // console.log('qin', 'isEnd', code, isEnd);
     window.mermaidMap = window.mermaidMap || {};
-    if (!code) {
-      this.container.innerHTML = 'loading...';
+    if (!isEnd) {
+      this.shadowRoot.innerHTML = `<pre><code>${code}</code></pre>`;
+      // this.container.innerHTML = 'loading...';
       return;
     }
     // 初始化 Mermaid

@@ -9,7 +9,8 @@ class PlantUMLDiagram extends HTMLElement {
 
   async _render() {
     const content = decodeURI(this.getAttribute('content')) || '';
-    if (!content.endsWith('@enduml')) {
+    const isEnd = this.getAttribute('is-end') === 'true';
+    if (!isEnd) {
       this.shadowRoot.innerHTML = `<pre><code>${content}</code></pre>`;
       return
     }

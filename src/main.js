@@ -4,6 +4,7 @@ import markdownIt from 'markdown-it';
 // import text from './md/mermaid_test.md?raw'
 // import text from './md/mermaid_single.md?raw'
 import text from './md/demo.md?raw'
+import fence from './newFence';
 
 const md = markdownIt({
   highlight: function (str, lang) {
@@ -26,7 +27,7 @@ const md = markdownIt({
   typographer: true    // 支持印刷字符替换[3](@ref)
 });
 
-
+md.block.ruler.at('fence', fence);
 
 // 保存默认的代码块渲染函数[7](@ref)
 // const defaultFenceRenderer = md.renderer.rules.fence;
@@ -34,6 +35,7 @@ const md = markdownIt({
 // 2. 自定义fence渲染规则
 md.renderer.rules.fence = (tokens, idx, options, env, self) => {
   const token = tokens[idx];
+  console.log('token', token.content, token.haveEndMarker);
   
   // 识别Mermaid代码块[1,6](@ref)
   // if (token.info.trim().toLowerCase() === 'mermaid') {
@@ -58,7 +60,7 @@ md.renderer.rules.fence = (tokens, idx, options, env, self) => {
   //   `
   // }
   return `
-    <code-block language="${token.info.trim()}">${token.content}</code-block>
+    <code-block language="${token.info.trim()}" is-end="${token.haveEndMarker}">${token.content}</code-block>
   `;
 };
 
@@ -96,7 +98,7 @@ async function start() {
     result += line;
     await sleep(100);
     const tokens = md.parse(result, {});
-    console.log('tokens', tokens);
+    // console.log('tokens', tokens);
     document.querySelector('#app').innerHTML = md.renderer.render(tokens);
   }
 }

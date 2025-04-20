@@ -1,5 +1,5 @@
 import css from './code.css?raw';
-console.log(css)
+// console.log(css)
 
 // 定义 Web Component
 class CodeBlock extends HTMLElement {
@@ -8,16 +8,20 @@ class CodeBlock extends HTMLElement {
     this.attachShadow({ mode: 'open' });
     this._language = 'Unknown';
     this._content = '';
+    this._isEnd = false;
   }
 
   static get observedAttributes() {
-    return ['language'];
+    return ['language', 'is-end'];
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
     if (name === 'language') {
       this._language = newValue || 'Unknown';
       this._updateHeader();
+    }
+    if (name === 'is-end') {
+      this._isEnd = newValue === 'true';
     }
   }
 
@@ -37,7 +41,7 @@ class CodeBlock extends HTMLElement {
     const header = `
       <div class="header">
         <div class="left">
-          <input type="checkbox" id="switch" class="switch-input" ${!canPreview ? 'disabled' : ''}>
+          <input type="checkbox" id="switch" class="switch-input" ${!canPreview ? 'disabled' : ''} ${canPreview ? 'checked' : ''}>
           <label for="switch" class="switch-label">
             <div class="switch-slider"></div>
             <span class="switch-option">代码</span>
@@ -74,8 +78,8 @@ class CodeBlock extends HTMLElement {
       ${header}
       <div>
         <div class="code-content">${content.outerHTML}</div>
-        ${this._language === 'mermaid' ? `<mermaid-chart code="${encodeURI(this._content)}"></mermaid-chart>` : ''}
-        ${this._language === 'plantuml' ? `<plantuml-chart content="${encodeURI(this._content)}"></plantuml-chart>` : ''}
+        ${this._language === 'mermaid' ? `<mermaid-chart code="${encodeURI(this._content)}" is-end="${this._isEnd}"></mermaid-chart>` : ''}
+        ${this._language === 'plantuml' ? `<plantuml-chart content="${encodeURI(this._content)}" is-end="${this._isEnd}"></plantuml-chart>` : ''}
       </div>
     `;
   }
