@@ -1,3 +1,27 @@
+## plantuml示例
+
+```plantuml
+@startuml
+actor User
+participant "主控MCU" as MCU
+participant "温湿度传感器" as Sensor
+
+MCU -> Sensor: 发送启动信号(START)
+activate Sensor #LightBlue
+MCU -> Sensor: 发送设备地址(0x44)
+alt 地址匹配成功
+    Sensor --> MCU: ACK响应
+    MCU -> Sensor: 读取寄存器
+    Sensor --> MCU: 数据字节(2 Bytes)
+else 地址不匹配
+    Sensor --> MCU: NACK响应
+    MCU -> MCU: 错误处理
+end
+deactivate Sensor
+@enduml
+```
+
+```javascript
 import mermaid from 'mermaid';
 
 class MermaidChart extends HTMLElement {
@@ -27,31 +51,16 @@ class MermaidChart extends HTMLElement {
 
   // 渲染逻辑
   async render() {
-    const code = decodeURI(this.getAttribute('code')) || '';
+    const code = this.getAttribute('code') || '';
     const theme = this.getAttribute('theme') || 'default';
-    console.log('qin', 'render mermaid', code);
-    window.mermaidMap = window.mermaidMap || {};
-    if (!code) {
-      this.container.innerHTML = 'loading...';
-      return;
-    }
+    
     // 初始化 Mermaid
     await mermaid.initialize({ theme });
-    try {
-      console.log('qin', 'render mermaid', code, );
-      if (window.mermaidMap[code]) {
-        this.container.innerHTML = window.mermaidMap[code];
-        return;
-      }
-      const { svg } = await mermaid.render('mermaid-chart', code);
-      // cache svg by key
-      this.container.innerHTML = svg;
-      window.mermaidMap[code] = svg;
-    } catch (e) {
-      this.container.innerHTML = `<div style="color: red;">Error: ${e.message}</div>`;
-    }
+    const { svg } = await mermaid.render('mermaid-chart', code);
+    this.container.innerHTML = svg;
   }
 }
 
 // 注册自定义元素
 customElements.define('mermaid-chart', MermaidChart);
+```

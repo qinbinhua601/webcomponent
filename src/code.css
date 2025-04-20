@@ -1,0 +1,164 @@
+:host {
+  display: block;
+  border: 1px solid #e1e4e8;
+  border-radius: 6px;
+  margin: 1em 0;
+  background: #f6f8fa;
+  position: relative;
+}
+.feedback {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background: #24292e;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 3px;
+  font-size: 0.8em;
+  animation: fadeOut 2s forwards;
+  z-index: 10;
+}
+
+@keyframes fadeOut {
+  0% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  border-bottom: 1px solid #e1e4e8;
+  font-family: SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.9em;
+  .left {
+    display: flex;
+    align-items: center;
+  }
+  .right {
+    display: flex;
+    align-items: center;
+  }
+}
+
+.language {
+  color: #6a737d;
+  margin-right: 12px;
+}
+
+.copy-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  background: none;
+  border: 1px solid #e1e4e8;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.copy-btn:hover {
+  background: rgba(255,255,255,0.9);
+}
+
+.copy-btn:active {
+  transform: scale(0.95);
+}
+
+.code-content {
+  padding: 1em;
+  overflow-x: auto;
+}
+
+.switch-input {
+  display: none;
+}
+
+.switch-label {
+  display: flex;
+  width: 160px;
+  height: 36px;
+  position: relative;
+  cursor: pointer;
+}
+
+.switch-slider {
+  position: absolute;
+  width: 80px;
+  height: 36px;
+  background: white;
+  border-radius: 18px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+  z-index: 1;
+}
+
+.switch-option {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  color: #666;
+  transition: color 0.3s ease;
+  z-index: 2;
+}
+
+/* 切换动画 */
+#switch:checked ~ .switch-label .switch-slider {
+  transform: translateX(80px);
+}
+
+#switch:checked ~ .switch-label .switch-option:nth-child(2),
+#switch:not(:checked) ~ .switch-label .switch-option:nth-child(3) {
+  color: #333;
+  font-weight: bold;
+}
+
+/* 内容区域 */
+.content {
+  display: none;
+  padding: 20px;
+  border: 1px solid #ddd;
+  margin: 20px;
+}
+
+#switch:checked ~ #preview-content {
+  display: block;
+}
+
+#switch:not(:checked) ~ #code-content {
+  display: block;
+}
+
+.header:has(#switch:checked) + div .code-content {
+  background-color: #f0f8ff;
+  display: none;
+}
+
+.header:has(#switch:checked) + div mermaid-chart, .header:has(#switch:checked) + div plantuml-chart {
+  background-color: #fff;
+  display: block;
+}
+
+
+.header:has(#switch:not(:checked)) + div .code-content {
+  background-color: #f0f8ff;
+  display: block;
+}
+
+.header:has(#switch:not(:checked)) + div mermaid-chart, .header:has(#switch:not(:checked)) + div plantuml-chart{
+  background-color: #fff;
+  display: none;
+}
+
+pre {
+  margin: 0;
+  font-family: SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+pre code.hljs { display: block; overflow-x: auto; padding: 1em; }code.hljs { padding: 3px 5px; }.hljs { color: rgb(36, 41, 46); background: rgb(255, 255, 255); }.hljs-doctag, .hljs-keyword, .hljs-meta .hljs-keyword, .hljs-template-tag, .hljs-template-variable, .hljs-type, .hljs-variable.language_ { color: rgb(215, 58, 73); }.hljs-title, .hljs-title.class_, .hljs-title.class_.inherited__, .hljs-title.function_ { color: rgb(111, 66, 193); }.hljs-attr, .hljs-attribute, .hljs-literal, .hljs-meta, .hljs-number, .hljs-operator, .hljs-selector-attr, .hljs-selector-class, .hljs-selector-id, .hljs-variable { color: rgb(0, 92, 197); }.hljs-meta .hljs-string, .hljs-regexp, .hljs-string { color: rgb(3, 47, 98); }.hljs-built_in, .hljs-symbol { color: rgb(227, 98, 9); }.hljs-code, .hljs-comment, .hljs-formula { color: rgb(106, 115, 125); }.hljs-name, .hljs-quote, .hljs-selector-pseudo, .hljs-selector-tag { color: rgb(34, 134, 58); }.hljs-subst { color: rgb(36, 41, 46); }.hljs-section { color: rgb(0, 92, 197); font-weight: 700; }.hljs-bullet { color: rgb(115, 92, 15); }.hljs-emphasis { color: rgb(36, 41, 46); font-style: italic; }.hljs-strong { color: rgb(36, 41, 46); font-weight: 700; }.hljs-addition { color: rgb(34, 134, 58); background-color: rgb(240, 255, 244); }.hljs-deletion { color: rgb(179, 29, 40); background-color: rgb(255, 238, 240); }
+

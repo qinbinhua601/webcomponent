@@ -1,3 +1,29 @@
+```mermaid
+  graph TD;
+    A-->B;
+    B-->C;
+    C-->D;
+    D-->A;
+    A-->B;
+    B-->C;
+    C-->D;
+    D-->A;
+    A-->B;
+    B-->C;
+    C-->D;
+    D-->A;
+    A-->B;
+    B-->C;
+    C-->D;
+    D-->A;
+    A-->B;
+    B-->C;
+    C-->D;
+    D-->A;
+```
+
+## mermaid示例
+```javascript
 import mermaid from 'mermaid';
 
 class MermaidChart extends HTMLElement {
@@ -27,31 +53,16 @@ class MermaidChart extends HTMLElement {
 
   // 渲染逻辑
   async render() {
-    const code = decodeURI(this.getAttribute('code')) || '';
+    const code = this.getAttribute('code') || '';
     const theme = this.getAttribute('theme') || 'default';
-    console.log('qin', 'render mermaid', code);
-    window.mermaidMap = window.mermaidMap || {};
-    if (!code) {
-      this.container.innerHTML = 'loading...';
-      return;
-    }
+    
     // 初始化 Mermaid
     await mermaid.initialize({ theme });
-    try {
-      console.log('qin', 'render mermaid', code, );
-      if (window.mermaidMap[code]) {
-        this.container.innerHTML = window.mermaidMap[code];
-        return;
-      }
-      const { svg } = await mermaid.render('mermaid-chart', code);
-      // cache svg by key
-      this.container.innerHTML = svg;
-      window.mermaidMap[code] = svg;
-    } catch (e) {
-      this.container.innerHTML = `<div style="color: red;">Error: ${e.message}</div>`;
-    }
+    const { svg } = await mermaid.render('mermaid-chart', code);
+    this.container.innerHTML = svg;
   }
 }
 
 // 注册自定义元素
 customElements.define('mermaid-chart', MermaidChart);
+```

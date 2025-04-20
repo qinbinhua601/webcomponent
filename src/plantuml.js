@@ -9,11 +9,13 @@ class PlantUMLDiagram extends HTMLElement {
 
   async _render() {
     const content = decodeURI(this.getAttribute('content')) || '';
-    if (!content.endsWith('@enduml\n')) {
+    if (!content.endsWith('@enduml')) {
       this.shadowRoot.innerHTML = `<pre><code>${content}</code></pre>`;
       return
     }
-    const svg = await this._callPlantUMLServer(content);
+    window.plantumlMap = window.plantumlMap || {};
+    let svg = window.plantumlMap[content] || await this._callPlantUMLServer(content);
+    window.plantumlMap[content] = svg
     this.shadowRoot.innerHTML = `
       <style>/* 样式隔离 */</style>
       <div class="container">${svg}</div>
