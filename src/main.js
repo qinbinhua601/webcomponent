@@ -27,7 +27,9 @@ const md = markdownIt({
   typographer: true    // 支持印刷字符替换[3](@ref)
 });
 
-md.block.ruler.at('fence', fence);
+md.block.ruler.at('fence', fence, {
+  alt: ['paragraph', 'reference', 'blockquote', 'list'],
+});
 
 // 保存默认的代码块渲染函数[7](@ref)
 // const defaultFenceRenderer = md.renderer.rules.fence;
