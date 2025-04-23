@@ -95,7 +95,12 @@ async function start() {
   const lines = document.querySelector('#markdown-content').value.split('\n');
 
   let result = '';
-  
+  const appDOM = document.querySelector('#app')
+  let isUserMoved = false;
+  const onUserMousewheelHandler = () => {
+    isUserMoved = true
+  }
+  appDOM.addEventListener('mousewheel', onUserMousewheelHandler)
   for(let i = 0; i < lines.length; i++) {
     const line = lines[i] + '\n';
     result += line;
@@ -105,19 +110,23 @@ async function start() {
     // console.log(sepTokensArray)
     const currentRenderIndex = sepTokensArray.length - 1;
 
-    let renderTargetDOM = document.querySelector('#app').querySelector(`.block-${currentRenderIndex}`)
+    let renderTargetDOM = appDOM.querySelector(`.block-${currentRenderIndex}`)
 
     if (renderTargetDOM) {
-      renderTargetDOM.innerHTML = md.renderer.render(sepTokensArray[currentRenderIndex])
+      renderTargetDOM.innerHTML = md.renderer.render(sepTokensArray[currentRenderIndex], {}, {})
     } else {
       renderTargetDOM = document.createElement('div')
       renderTargetDOM.className = `block-${currentRenderIndex}`
-      renderTargetDOM.innerHTML = md.renderer.render(sepTokensArray[currentRenderIndex])
-      document.querySelector('#app').appendChild(renderTargetDOM)
+      renderTargetDOM.innerHTML = md.renderer.render(sepTokensArray[currentRenderIndex], {}, {})
+      appDOM.appendChild(renderTargetDOM)
+    }
+    if (!isUserMoved) {
+      renderTargetDOM.scrollIntoView()
     }
     // console.log('tokens', tokens);
     // document.querySelector('#app').innerHTML = md.renderer.render(tokens);
   }
+  appDOM.removeEventListener('mousewheel', onUserMousewheelHandler)
 }
 window.md = md;
 window.start = start
