@@ -3,7 +3,8 @@ import markdownIt from 'markdown-it';
 // import text from './md/test.md?raw'
 // import text from './md/mermaid_test.md?raw'
 // import text from './md/mermaid_single.md?raw'
-import text from './md/demo.md?raw'
+// import text from './md/demo.md?raw'
+import text from './md/kityminder.md?raw'
 import fence from './newFence';
 
 const md = markdownIt({
@@ -27,7 +28,9 @@ const md = markdownIt({
   typographer: true    // 支持印刷字符替换[3](@ref)
 });
 
-md.block.ruler.at('fence', fence);
+md.block.ruler.at('fence', fence, {
+  alt: ['paragraph', 'reference', 'blockquote', 'list']
+});
 
 // 保存默认的代码块渲染函数[7](@ref)
 // const defaultFenceRenderer = md.renderer.rules.fence;
@@ -59,6 +62,15 @@ md.renderer.rules.fence = (tokens, idx, options, env, self) => {
   //     </plantuml-chart>
   //   `
   // }
+  if (token.info.trim().toLowerCase() === 'kityminder') {
+    return `
+      <minder-chart 
+        content="${encodeURI(token.content)}"
+        is-end="${token.haveEndMarker}"
+      >
+      </minder-chart>
+    `;
+  }
   return `
     <code-block language="${token.info.trim()}" is-end="${token.haveEndMarker}">${token.content}</code-block>
   `;
