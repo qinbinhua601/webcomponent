@@ -4,6 +4,7 @@ import markdownIt from 'markdown-it';
 // import text from './md/mermaid_test.md?raw'
 // import text from './md/mermaid_single.md?raw'
 import text from './md/demo.md?raw'
+import { sepTokens } from './sepTokens'
 import fence from './newFence';
 
 const md = markdownIt({
@@ -37,7 +38,7 @@ md.block.ruler.at('fence', fence, {
 // 2. 自定义fence渲染规则
 md.renderer.rules.fence = (tokens, idx, options, env, self) => {
   const token = tokens[idx];
-  console.log('token', token.content, token.haveEndMarker);
+  // console.log('token', token.content, token.haveEndMarker);
   
   // 识别Mermaid代码块[1,6](@ref)
   // if (token.info.trim().toLowerCase() === 'mermaid') {
@@ -100,8 +101,22 @@ async function start() {
     result += line;
     await sleep(100);
     const tokens = md.parse(result, {});
+    const sepTokensArray = sepTokens(tokens);
+    // console.log(sepTokensArray)
+    const currentRenderIndex = sepTokensArray.length - 1;
+
+    let renderTargetDOM = document.querySelector('#app').querySelector(`.block-${currentRenderIndex}`)
+
+    if (renderTargetDOM) {
+      renderTargetDOM.innerHTML = md.renderer.render(sepTokensArray[currentRenderIndex])
+    } else {
+      renderTargetDOM = document.createElement('div')
+      renderTargetDOM.className = `block-${currentRenderIndex}`
+      renderTargetDOM.innerHTML = md.renderer.render(sepTokensArray[currentRenderIndex])
+      document.querySelector('#app').appendChild(renderTargetDOM)
+    }
     // console.log('tokens', tokens);
-    document.querySelector('#app').innerHTML = md.renderer.render(tokens);
+    // document.querySelector('#app').innerHTML = md.renderer.render(tokens);
   }
 }
 window.md = md;

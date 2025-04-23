@@ -40,7 +40,7 @@ class MermaidChart extends HTMLElement {
     // 初始化 Mermaid
     await mermaid.initialize({ theme });
     try {
-      console.log('qin', 'render mermaid', code, );
+      // console.log('qin', 'render mermaid', code, );
       if (window.mermaidMap[code]) {
         this.container.innerHTML = window.mermaidMap[code];
         return;
