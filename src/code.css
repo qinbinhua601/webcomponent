@@ -162,3 +162,24 @@ pre {
 }
 pre code.hljs { display: block; overflow-x: auto; padding: 1em; }code.hljs { padding: 3px 5px; }.hljs { color: rgb(36, 41, 46); background: rgb(255, 255, 255); }.hljs-doctag, .hljs-keyword, .hljs-meta .hljs-keyword, .hljs-template-tag, .hljs-template-variable, .hljs-type, .hljs-variable.language_ { color: rgb(215, 58, 73); }.hljs-title, .hljs-title.class_, .hljs-title.class_.inherited__, .hljs-title.function_ { color: rgb(111, 66, 193); }.hljs-attr, .hljs-attribute, .hljs-literal, .hljs-meta, .hljs-number, .hljs-operator, .hljs-selector-attr, .hljs-selector-class, .hljs-selector-id, .hljs-variable { color: rgb(0, 92, 197); }.hljs-meta .hljs-string, .hljs-regexp, .hljs-string { color: rgb(3, 47, 98); }.hljs-built_in, .hljs-symbol { color: rgb(227, 98, 9); }.hljs-code, .hljs-comment, .hljs-formula { color: rgb(106, 115, 125); }.hljs-name, .hljs-quote, .hljs-selector-pseudo, .hljs-selector-tag { color: rgb(34, 134, 58); }.hljs-subst { color: rgb(36, 41, 46); }.hljs-section { color: rgb(0, 92, 197); font-weight: 700; }.hljs-bullet { color: rgb(115, 92, 15); }.hljs-emphasis { color: rgb(36, 41, 46); font-style: italic; }.hljs-strong { color: rgb(36, 41, 46); font-weight: 700; }.hljs-addition { color: rgb(34, 134, 58); background-color: rgb(240, 255, 244); }.hljs-deletion { color: rgb(179, 29, 40); background-color: rgb(255, 238, 240); }
 
+
+/* 添加 CSS 样式 */
+pre {
+  counter-reset: line;
+}
+
+pre code .line {
+  counter-increment: line;
+  display: block;
+}
+
+pre code .line::before {
+  content: counter(line);
+  display: inline-block;
+  width: 2em;
+  padding-right: 1em;
+  color: #666;
+  border-right: 1px solid #ddd;
+  margin-right: 1em;
+  user-select: none;
+}

@@ -1,4 +1,6 @@
-import mermaid from 'mermaid';
+// import mermaid from 'mermaid';
+
+// const { default: mermaid } = require("mermaid");
 
 class MermaidChart extends HTMLElement {
   constructor() {
@@ -38,18 +40,22 @@ class MermaidChart extends HTMLElement {
       return;
     }
     // 初始化 Mermaid
-    await mermaid.initialize({ theme });
+    await mermaid.initialize({ theme, suppressErrorRendering: true });
+    // console.log(mermaid)
     try {
       // console.log('qin', 'render mermaid', code, );
       if (window.mermaidMap[code]) {
         this.container.innerHTML = window.mermaidMap[code];
         return;
       }
-      const { svg } = await mermaid.render('mermaid-chart', code);
+      
+      const {svg} = await mermaid.render('mermaid-chart', code);
+      // console.log(res)
       // cache svg by key
       this.container.innerHTML = svg;
       window.mermaidMap[code] = svg;
     } catch (e) {
+      console.log(e)
       this.container.innerHTML = `<div style="color: red;">Error: ${e.message}</div>`;
     }
   }

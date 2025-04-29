@@ -71,13 +71,13 @@ class CodeBlock extends HTMLElement {
       hljs.highlightElement(code);
     }
 
-
+    const isCodeBlock = !['mermaid', 'plantuml'].includes(this._language);
 
     this.shadowRoot.innerHTML = `
       <style>${style}</style>
       ${header}
       <div>
-        <div class="code-content">${content.outerHTML}</div>
+        ${isCodeBlock ? `<div class="code-content">${content.outerHTML}</div>` : ''}
         ${this._language === 'mermaid' ? `<mermaid-chart code="${encodeURI(this._content)}" is-end="${this._isEnd}"></mermaid-chart>` : ''}
         ${this._language === 'plantuml' ? `<plantuml-chart content="${encodeURI(this._content)}" is-end="${this._isEnd}"></plantuml-chart>` : ''}
       </div>
