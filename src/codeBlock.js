@@ -61,7 +61,11 @@ class CodeBlock extends HTMLElement {
     `;
 
     const content = document.createElement('pre');
-    content.innerHTML = this._content;
+    const isCodeBlock = !['mermaid', 'plantuml'].includes(this._language);
+    if (isCodeBlock) {
+      content.innerHTML = this._content;
+    }
+
     // 自动高亮代码（需先加载 highlight.js）
     if (window.hljs) {
       const code = document.createElement('code');
@@ -71,13 +75,12 @@ class CodeBlock extends HTMLElement {
       hljs.highlightElement(code);
     }
 
-    const isCodeBlock = !['mermaid', 'plantuml'].includes(this._language);
 
     this.shadowRoot.innerHTML = `
       <style>${style}</style>
       ${header}
       <div>
-        ${isCodeBlock ? `<div class="code-content">${content.outerHTML}</div>` : ''}
+        <div class="code-content">${content.outerHTML}</div>
         ${this._language === 'mermaid' ? `<mermaid-chart code="${encodeURI(this._content)}" is-end="${this._isEnd}"></mermaid-chart>` : ''}
         ${this._language === 'plantuml' ? `<plantuml-chart content="${encodeURI(this._content)}" is-end="${this._isEnd}"></plantuml-chart>` : ''}
       </div>

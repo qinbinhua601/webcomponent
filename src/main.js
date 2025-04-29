@@ -99,6 +99,7 @@ async function start() {
   let isUserMoved = false;
   const onUserMousewheelHandler = () => {
     isUserMoved = true
+    // syncPosition()
   }
   appDOM.addEventListener('mousewheel', onUserMousewheelHandler)
   for(let i = 0; i < lines.length; i++) {
@@ -127,8 +128,24 @@ async function start() {
     // document.querySelector('#app').innerHTML = md.renderer.render(tokens);
   }
   appDOM.removeEventListener('mousewheel', onUserMousewheelHandler)
+  // syncPosition()
 }
 window.md = md;
 window.start = start
 
 start();
+
+// sync the scroll position between the two elements #markdown-content and #app
+document.querySelector('#markdown-content').addEventListener('scroll', (e) => {
+  const scrollTop = e.target.scrollTop;
+  const $app = document.querySelector('#app')
+  const appScrollTop = ($app.scrollHeight - $app.getBoundingClientRect().height) / (e.target.scrollHeight - e.target.getBoundingClientRect().height);
+  $app.scrollTop = appScrollTop * scrollTop;
+});
+
+// function syncPosition() {
+//   const $app = document.querySelector('#app')
+//   const $markdownContent = document.querySelector('#markdown-content')
+//   const ratio = ($app.scrollHeight - $app.getBoundingClientRect().height) / ($markdownContent.scrollHeight - $markdownContent.getBoundingClientRect().height);
+//   $markdownContent.scrollTop = ratio * $app.scrollTop;
+// }
